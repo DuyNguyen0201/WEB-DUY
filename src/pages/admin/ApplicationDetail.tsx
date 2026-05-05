@@ -69,9 +69,9 @@ export const AdminApplicationDetail: React.FC = () => {
 
   const scoreColumns = [
     { title: "Môn thi", dataIndex: "subject", key: "subject" },
-    { 
-      title: "Điểm", 
-      dataIndex: "score", 
+    {
+      title: "Điểm",
+      dataIndex: "score",
       key: "score",
       align: "center" as const,
       render: (val: number) => <Text strong>{val.toFixed(2)}</Text>
@@ -92,32 +92,32 @@ export const AdminApplicationDetail: React.FC = () => {
         </Space>
       )
     },
-    { 
-      title: "Loại minh chứng", 
-      dataIndex: "category", 
+    {
+      title: "Loại minh chứng",
+      dataIndex: "category",
       key: "category",
       render: (category: string) => getEvidenceCategoryLabel(category)
     },
-    { 
-      title: "Định dạng", 
-      dataIndex: "type", 
+    {
+      title: "Định dạng",
+      dataIndex: "type",
       key: "type",
       render: (type: string) => type ? type.toUpperCase() : "Chưa cập nhật"
     },
-    { 
-      title: "Kích thước", 
-      dataIndex: "size", 
+    {
+      title: "Kích thước",
+      dataIndex: "size",
       key: "size",
       render: (size: number) => formatFileSize(size)
     },
-    { 
-      title: "Ngày tải lên", 
-      dataIndex: "uploadedAt", 
+    {
+      title: "Ngày tải lên",
+      dataIndex: "uploadedAt",
       key: "uploadedAt",
       render: (date: string) => date ? formatDateTime(date) : "Chưa cập nhật"
     },
-    { 
-      title: "Hành động", 
+    {
+      title: "Hành động",
       key: "action",
       render: (_: any, record: any) => (
         record.url ? (
@@ -211,12 +211,12 @@ export const AdminApplicationDetail: React.FC = () => {
 
   return (
     <div>
-      <PageHeader 
-        title="Chi tiết hồ sơ xét tuyển" 
+      <PageHeader
+        title="Chi tiết hồ sơ xét tuyển"
         breadcrumbs={[
-          { title: "Quản lý hồ sơ" }, 
+          { title: "Quản lý hồ sơ" },
           { title: "Chi tiết" }
-        ]} 
+        ]}
         extra={
           <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/admin/applications")}>
             Quay lại danh sách
@@ -281,9 +281,9 @@ export const AdminApplicationDetail: React.FC = () => {
 
           <Card title="Minh chứng">
             {safeEvidenceFiles.length > 0 ? (
-              <Table 
-                columns={evidenceColumns} 
-                dataSource={safeEvidenceFiles} 
+              <Table
+                columns={evidenceColumns}
+                dataSource={safeEvidenceFiles}
                 rowKey={(record) => record.id || Math.random().toString()}
                 pagination={false}
                 size="small"
@@ -312,7 +312,7 @@ export const AdminApplicationDetail: React.FC = () => {
             <div style={{ marginBottom: 16 }}>
               <Text strong style={{ display: "block", marginBottom: 8 }}>Trạng thái xử lý:</Text>
               {renderStatusAlert()}
-              
+
               {application.status === "pending" && (
                 <Space style={{ marginTop: 16, width: "100%", justifyContent: "center" }}>
                   <Popconfirm
@@ -340,9 +340,9 @@ export const AdminApplicationDetail: React.FC = () => {
           <Card title="Điểm xét tuyển">
             {scoreData.length > 0 ? (
               <>
-                <Table 
-                  columns={scoreColumns} 
-                  dataSource={scoreData} 
+                <Table
+                  columns={scoreColumns}
+                  dataSource={scoreData}
                   rowKey="subject"
                   pagination={false}
                   size="small"
