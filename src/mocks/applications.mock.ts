@@ -8,6 +8,9 @@ export const mockApplications: Application[] = [
     universityId: "university_002", // Bách khoa HN
     majorId: "major_003", // Khoa học Máy tính
     subjectGroupCode: "A00",
+    admissionRoundId: "ar_2",
+    priorityGroup: "none",
+    priorityScore: 0,
     scores: {
       math: 9.5,
       physics: 9.0,
@@ -20,6 +23,7 @@ export const mockApplications: Application[] = [
         name: "hoc_ba_lop_12.pdf",
         url: "https://example.com/mock_file.pdf",
         type: "pdf",
+        category: "transcript",
         size: 1024000, // 1MB
         uploadedAt: "2026-05-03T10:00:00.000Z"
       }
@@ -37,6 +41,8 @@ export const mockApplications: Application[] = [
     universityId: "university_001", // QGH
     majorId: "major_002", // Quản trị kinh doanh
     subjectGroupCode: "D01",
+    priorityGroup: "none",
+    priorityScore: 0,
     scores: {
       math: 8.0,
       literature: 8.5,
@@ -49,6 +55,7 @@ export const mockApplications: Application[] = [
         name: "CCCD_mat_truoc.jpg",
         url: "https://example.com/mock_image.jpg",
         type: "image",
+        category: "citizenId",
         size: 512000, // 500KB
         uploadedAt: "2026-05-04T09:00:00.000Z"
       }
@@ -69,6 +76,8 @@ export const mockApplications: Application[] = [
     universityId: "university_001", // QGH
     majorId: "major_002", // Quản trị kinh doanh
     subjectGroupCode: "A01",
+    priorityGroup: "none",
+    priorityScore: 0,
     scores: {
       math: 7.0,
       physics: 7.0,
@@ -92,6 +101,8 @@ export const mockApplications: Application[] = [
     universityId: "university_003", // HCMUS
     majorId: "major_004", // CNTT HCM
     subjectGroupCode: "A00",
+    priorityGroup: "none",
+    priorityScore: 0,
     scores: {
       math: 8.5,
       physics: 8.0,

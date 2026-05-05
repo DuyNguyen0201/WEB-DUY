@@ -25,9 +25,12 @@ import { Results } from "../pages/candidate/Results";
 import { AdminDashboard } from "../pages/admin/Dashboard";
 import { UniversityManagement } from "../pages/admin/UniversityManagement";
 import { MajorManagement } from "../pages/admin/MajorManagement";
+import { SubjectGroupList } from "../pages/admin/SubjectGroupList";
+import { AdmissionRoundList } from "../pages/admin/AdmissionRoundList";
 import { CandidateManagement } from "../pages/admin/CandidateManagement";
 import { ApplicationManagement } from "../pages/admin/ApplicationManagement";
 import { AdminApplicationDetail } from "../pages/admin/ApplicationDetail";
+import { NotificationLogList } from "../pages/admin/NotificationLogList";
 
 // Error Pages
 import { ForbiddenPage } from "../pages/errors/ForbiddenPage";
@@ -74,9 +77,12 @@ export const router = createBrowserRouter([
           { path: "dashboard", element: <AdminDashboard /> },
           { path: "universities", element: <UniversityManagement /> },
           { path: "majors", element: <MajorManagement /> },
+          { path: "subject-groups", element: <SubjectGroupList /> },
+          { path: "admission-rounds", element: <AdmissionRoundList /> },
           { path: "candidates", element: <CandidateManagement /> },
           { path: "applications", element: <ApplicationManagement /> },
           { path: "applications/:id", element: <AdminApplicationDetail /> },
+          { path: "notifications", element: <NotificationLogList /> },
         ],
       },
     ],

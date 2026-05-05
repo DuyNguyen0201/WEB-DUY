@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Card, Result, Button, Descriptions, Typography, Tag, Alert, Row, Col, List } from "antd";
+import { Card, Result, Button, Descriptions, Typography, Tag, Alert, Row, Col } from "antd";
 import { PageHeader } from "../../components/common/PageHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import { ApplicationStatusTag } from "../../components/status/ApplicationStatusTag";
@@ -8,7 +8,13 @@ import { useCandidateStore } from "../../stores/candidate.store";
 import { useApplicationStore } from "../../stores/application.store";
 import { useUniversityStore } from "../../stores/university.store";
 import { useMajorStore } from "../../stores/major.store";
+import { useAdmissionRoundStore } from "../../stores/admissionRound.store";
 import { formatDateTime } from "../../utils/date";
+import { formatFileSize } from "../../utils/file";
+import { getPriorityGroupLabel } from "../../constants/priorityGroups";
+import { getEvidenceCategoryLabel } from "../../constants/evidenceCategories";
+import { PaperClipOutlined } from "@ant-design/icons";
+import { Table, Space, Empty } from "antd";
 
 const { Title, Text } = Typography;
 
@@ -21,6 +27,7 @@ export const ApplicationDetail: React.FC = () => {
   const { getApplicationById } = useApplicationStore();
   const { getUniversityById } = useUniversityStore();
   const { getMajorById } = useMajorStore();
+  const { getAdmissionRoundById } = useAdmissionRoundStore();
 
   const candidate = useMemo(() => {
     if (!currentUser) return null;
@@ -49,6 +56,7 @@ export const ApplicationDetail: React.FC = () => {
 
   const university = getUniversityById(application.universityId);
   const major = getMajorById(application.majorId);
+  const admissionRound = application.admissionRoundId ? getAdmissionRoundById(application.admissionRoundId) : undefined;
 
   const subjectNames: Record<string, string> = {
     math: "Toán học",
@@ -61,6 +69,62 @@ export const ApplicationDetail: React.FC = () => {
     geography: "Địa lý",
     civicEducation: "Giáo dục công dân"
   };
+
+  const safeEvidenceFiles = Array.isArray(application.evidenceFiles) ? application.evidenceFiles : [];
+
+  const evidenceColumns = [
+    {
+      title: "Tên file",
+      dataIndex: "name",
+      key: "name",
+      render: (text: string) => (
+        <Space>
+          <PaperClipOutlined />
+          <Text>{text || "Chưa cập nhật"}</Text>
+        </Space>
+      )
+    },
+    { 
+      title: "Loại minh chứng", 
+      dataIndex: "category", 
+      key: "category",
+      render: (category: string) => getEvidenceCategoryLabel(category)
+    },
+    { 
+      title: "Định dạng", 
+      dataIndex: "type", 
+      key: "type",
+      render: (type: string) => type ? type.toUpperCase() : "Chưa cập nhật"
+    },
+    { 
+      title: "Dung lượng", 
+      dataIndex: "size", 
+      key: "size",
+      render: (size: number) => formatFileSize(size)
+    },
+    { 
+      title: "Ngày tải lên", 
+      dataIndex: "uploadedAt", 
+      key: "uploadedAt",
+      render: (date: string) => date ? formatDateTime(date) : "Chưa cập nhật"
+    },
+    { 
+      title: "Hành động", 
+      key: "action",
+      render: (_: any, record: any) => (
+        record.url ? (
+          <Button type="link" href={record.url} target="_blank">Xem file</Button>
+        ) : (
+          <Text type="secondary">Không có liên kết</Text>
+        )
+      )
+    }
+  ];
+
+  const priorityGroup = application.priorityGroup ?? "none";
+  const priorityScore = application.priorityScore ?? 0;
+  const examTotalScore = application.totalScore ?? 0;
+  const finalAdmissionScore = examTotalScore + priorityScore;
 
   return (
     <div>
@@ -114,6 +178,9 @@ export const ApplicationDetail: React.FC = () => {
             </Descriptions>
 
             <Descriptions title="Thông tin nguyện vọng" bordered column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }} style={{ marginBottom: 24 }}>
+              <Descriptions.Item label="Đợt xét tuyển" span={2}>
+                <Text strong>{admissionRound ? `${admissionRound.code} - ${admissionRound.name}` : "Chưa xác định đợt xét tuyển"}</Text>
+              </Descriptions.Item>
               <Descriptions.Item label="Trường đại học" span={2}>
                 <Text strong>{university?.name || "N/A"}</Text> ({university?.code})
               </Descriptions.Item>
@@ -123,8 +190,17 @@ export const ApplicationDetail: React.FC = () => {
               <Descriptions.Item label="Tổ hợp xét tuyển">
                 <Tag color="blue">{application.subjectGroupCode}</Tag>
               </Descriptions.Item>
+              <Descriptions.Item label="Đối tượng ưu tiên">
+                <Text strong>{getPriorityGroupLabel(priorityGroup)}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label="Tổng điểm thi">
+                <Text strong>{examTotalScore.toFixed(2)}</Text>
+              </Descriptions.Item>
+              <Descriptions.Item label="Điểm ưu tiên">
+                <Text strong>{priorityScore}</Text>
+              </Descriptions.Item>
               <Descriptions.Item label="Tổng điểm xét tuyển">
-                <Text type="danger" strong>{application.totalScore.toFixed(2)}</Text>
+                <Text type="danger" strong>{finalAdmissionScore.toFixed(2)}</Text>
               </Descriptions.Item>
             </Descriptions>
 
@@ -143,18 +219,17 @@ export const ApplicationDetail: React.FC = () => {
             </Card>
 
             <Title level={5}>Minh chứng đính kèm</Title>
-            {application.evidenceFiles && application.evidenceFiles.length > 0 ? (
-              <List
-                bordered
-                dataSource={application.evidenceFiles}
-                renderItem={(file) => (
-                  <List.Item>
-                    <Typography.Text mark>[{file.type.toUpperCase()}]</Typography.Text> {file.name}
-                  </List.Item>
-                )}
+            {safeEvidenceFiles.length > 0 ? (
+              <Table 
+                columns={evidenceColumns} 
+                dataSource={safeEvidenceFiles} 
+                rowKey={(record) => record.id || Math.random().toString()}
+                pagination={false}
+                size="small"
+                scroll={{ x: true }}
               />
             ) : (
-              <Text type="secondary">Không có minh chứng nào được đính kèm.</Text>
+              <Empty description="Chưa có file minh chứng" />
             )}
 
             {application.candidateNote && (

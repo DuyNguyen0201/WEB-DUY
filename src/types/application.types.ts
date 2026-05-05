@@ -22,6 +22,7 @@ export interface EvidenceFile {
   name: string;
   url: string;
   type: EvidenceFileType;
+  category?: string;
   size: number;
   uploadedAt: string;
 }
@@ -45,6 +46,9 @@ export interface Application {
   universityId: string;
   majorId: string;
   subjectGroupCode: string;
+  admissionRoundId?: string;
+  priorityGroup?: string;
+  priorityScore?: number;
   scores: ApplicationScores;
   totalScore: number;
   evidenceFiles: EvidenceFile[];

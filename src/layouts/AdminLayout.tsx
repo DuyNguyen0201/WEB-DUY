@@ -8,7 +8,10 @@ import {
   TeamOutlined, 
   FolderOpenOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  AppstoreOutlined,
+  CalendarOutlined,
+  BellOutlined
 } from "@ant-design/icons";
 
 import { useAuthStore } from "../stores/auth.store";
@@ -30,8 +33,11 @@ export const AdminLayout: React.FC = () => {
     { key: "/admin/dashboard", icon: <DashboardOutlined />, label: "Bảng điều khiển" },
     { key: "/admin/universities", icon: <BankOutlined />, label: "Quản lý trường" },
     { key: "/admin/majors", icon: <BookOutlined />, label: "Quản lý ngành" },
+    { key: "/admin/subject-groups", icon: <AppstoreOutlined />, label: "Quản lý tổ hợp" },
     { key: "/admin/candidates", icon: <TeamOutlined />, label: "Quản lý thí sinh" },
     { key: "/admin/applications", icon: <FolderOpenOutlined />, label: "Quản lý hồ sơ" },
+    { key: "/admin/admission-rounds", icon: <CalendarOutlined />, label: "Quản lý đợt xét tuyển" },
+    { key: "/admin/notifications", icon: <BellOutlined />, label: "Lịch sử thông báo" },
   ];
 
   const userMenu = {

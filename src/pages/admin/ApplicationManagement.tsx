@@ -9,6 +9,7 @@ import { useApplicationStore } from "../../stores/application.store";
 import { useCandidateStore } from "../../stores/candidate.store";
 import { useUniversityStore } from "../../stores/university.store";
 import { useMajorStore } from "../../stores/major.store";
+import { useAdmissionRoundStore } from "../../stores/admissionRound.store";
 import { mockSubjectGroups } from "../../mocks/subjectGroups.mock";
 import type { Application } from "../../types/application.types";
 import { formatDateTime } from "../../utils/date";
@@ -22,14 +23,17 @@ export const ApplicationManagement: React.FC = () => {
   const { getCandidateById } = useCandidateStore();
   const { universities, getUniversityById } = useUniversityStore();
   const { majors, getMajorById } = useMajorStore();
+  const { admissionRounds, getAdmissionRoundById } = useAdmissionRoundStore();
 
   const safeApplications = Array.isArray(applications) ? applications : [];
   const safeUniversities = Array.isArray(universities) ? universities : [];
   const safeMajors = Array.isArray(majors) ? majors : [];
   const safeSubjectGroups = Array.isArray(mockSubjectGroups) ? mockSubjectGroups : [];
+  const safeAdmissionRounds = Array.isArray(admissionRounds) ? admissionRounds : [];
 
   const [searchText, setSearchText] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [admissionRoundFilter, setAdmissionRoundFilter] = useState<string>("all");
   const [universityFilter, setUniversityFilter] = useState<string>("all");
   const [majorFilter, setMajorFilter] = useState<string>("all");
   const [subjectGroupFilter, setSubjectGroupFilter] = useState<string>("all");
@@ -43,6 +47,9 @@ export const ApplicationManagement: React.FC = () => {
     return safeApplications.filter(app => {
       // Status filter
       if (statusFilter !== "all" && app.status !== statusFilter) return false;
+
+      // Admission round filter
+      if (admissionRoundFilter !== "all" && app.admissionRoundId !== admissionRoundFilter) return false;
 
       // University filter
       if (universityFilter !== "all" && app.universityId !== universityFilter) return false;
@@ -82,6 +89,7 @@ export const ApplicationManagement: React.FC = () => {
   }, [
     safeApplications, 
     statusFilter, 
+    admissionRoundFilter,
     universityFilter, 
     majorFilter, 
     subjectGroupFilter, 
@@ -102,6 +110,15 @@ export const ApplicationManagement: React.FC = () => {
       dataIndex: "applicationCode",
       key: "applicationCode",
       render: (text: string) => <strong>{text || "Chưa cập nhật"}</strong>
+    },
+    {
+      title: "Đợt xét tuyển",
+      dataIndex: "admissionRoundId",
+      key: "admissionRoundId",
+      render: (id: string) => {
+        const round = id ? getAdmissionRoundById(id) : null;
+        return round ? <Typography.Text>{round.code}</Typography.Text> : <Typography.Text type="secondary">Chưa xác định</Typography.Text>;
+      }
     },
     {
       title: "Thí sinh",
@@ -186,6 +203,22 @@ export const ApplicationManagement: React.FC = () => {
               <Option value="pending">Chờ duyệt</Option>
               <Option value="approved">Đã duyệt</Option>
               <Option value="rejected">Từ chối</Option>
+            </Select>
+          </Col>
+          <Col xs={24} sm={12} md={4}>
+            <Select
+              style={{ width: "100%" }}
+              value={admissionRoundFilter}
+              onChange={value => setAdmissionRoundFilter(value)}
+              showSearch
+              filterOption={(input, option) => 
+                (option?.children as unknown as string).toLowerCase().includes(input.toLowerCase())
+              }
+            >
+              <Option value="all">Tất cả đợt</Option>
+              {safeAdmissionRounds.map(r => (
+                <Option key={r.id} value={r.id}>{r.code} - {r.name}</Option>
+              ))}
             </Select>
           </Col>
           <Col xs={24} sm={12} md={4}>

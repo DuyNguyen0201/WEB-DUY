@@ -13,8 +13,12 @@ import { useCandidateStore } from "../../stores/candidate.store";
 import { useUniversityStore } from "../../stores/university.store";
 import { useMajorStore } from "../../stores/major.store";
 import { useApplicationStore } from "../../stores/application.store";
+import { useAdmissionRoundStore } from "../../stores/admissionRound.store";
+import { useNotificationLogStore } from "../../stores/notificationLog.store";
 import { mockSubjectGroups } from "../../mocks/subjectGroups.mock";
 import { calculateTotalScore } from "../../utils/calculate";
+import { PRIORITY_GROUPS, getPriorityScore } from "../../constants/priorityGroups";
+import { EVIDENCE_CATEGORIES } from "../../constants/evidenceCategories";
 import type { Application, EvidenceFile } from "../../types/application.types";
 import type { UploadFile } from "antd/es/upload/interface";
 
@@ -32,10 +36,21 @@ export const ApplicationForm: React.FC = () => {
   const { getActiveUniversities } = useUniversityStore();
   const { getActiveMajorsByUniversityId } = useMajorStore();
   const { applications, createApplication } = useApplicationStore();
+  const { admissionRounds, getAdmissionRoundById } = useAdmissionRoundStore();
+  const { createNotificationLog } = useNotificationLogStore();
+  const { getUniversityById } = useUniversityStore();
+  const { getMajorById } = useMajorStore();
+
+  const activeRounds = useMemo(() => {
+    const safeRounds = Array.isArray(admissionRounds) ? admissionRounds : [];
+    return safeRounds.filter(r => r.status === "active");
+  }, [admissionRounds]);
 
   const [selectedUniversityId, setSelectedUniversityId] = useState<string | undefined>(defaultUniversityId || undefined);
   const [selectedMajorId, setSelectedMajorId] = useState<string | undefined>();
   const [selectedSubjectGroupCode, setSelectedSubjectGroupCode] = useState<string | undefined>();
+  const [selectedPriorityGroup, setSelectedPriorityGroup] = useState<string>("none");
+  const [selectedEvidenceCategory, setSelectedEvidenceCategory] = useState<string>("other");
   const [totalScore, setTotalScore] = useState<number>(0);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -110,7 +125,18 @@ export const ApplicationForm: React.FC = () => {
       });
       setTotalScore(calculateTotalScore(scoreObj));
     }
+
+    if (changedValues.priorityGroup) {
+      setSelectedPriorityGroup(changedValues.priorityGroup);
+    }
+
+    if (changedValues.evidenceCategory) {
+      setSelectedEvidenceCategory(changedValues.evidenceCategory);
+    }
   };
+
+  const currentPriorityScore = getPriorityScore(selectedPriorityGroup);
+  const finalAdmissionScore = totalScore + currentPriorityScore;
 
   const handleUploadChange = (info: any) => {
     let newFileList = [...info.fileList];
@@ -119,7 +145,7 @@ export const ApplicationForm: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    if (!candidate) return;
+    if (!candidate || !currentUser) return;
 
     // Check duplicate
     const isDuplicate = applications.some(
@@ -140,6 +166,7 @@ export const ApplicationForm: React.FC = () => {
       name: file.name,
       url: "#",
       type: file.type === "application/pdf" ? "pdf" : "image",
+      category: selectedEvidenceCategory,
       size: file.size || 0,
       uploadedAt: new Date().toISOString()
     }));
@@ -151,6 +178,9 @@ export const ApplicationForm: React.FC = () => {
       universityId: values.universityId,
       majorId: values.majorId,
       subjectGroupCode: values.subjectGroupCode,
+      admissionRoundId: values.admissionRoundId,
+      priorityGroup: selectedPriorityGroup,
+      priorityScore: currentPriorityScore,
       scores: values.scores,
       totalScore,
       evidenceFiles: mockEvidences,
@@ -161,6 +191,30 @@ export const ApplicationForm: React.FC = () => {
     };
 
     createApplication(newApp);
+
+    try {
+      const university = getUniversityById(values.universityId);
+      const major = getMajorById(values.majorId);
+      const admissionRound = values.admissionRoundId ? getAdmissionRoundById(values.admissionRoundId) : undefined;
+
+      const uniName = university?.name || "Không rõ trường";
+      const majorName = major?.name || "Không rõ ngành";
+      const roundName = admissionRound ? `${admissionRound.code} - ${admissionRound.name}` : "Chưa xác định đợt xét tuyển";
+
+      createNotificationLog({
+        recipientUserId: currentUser.id,
+        recipientEmail: candidate.email || currentUser.email,
+        recipientName: candidate.fullName || "Không rõ thí sinh",
+        applicationId: newApp.id,
+        type: "application_submitted",
+        channel: "in_app",
+        subject: "Bạn đã nộp hồ sơ xét tuyển thành công",
+        content: `Mã hồ sơ: ${newApp.applicationCode}\nTrường: ${uniName}\nNgành: ${majorName}\nĐợt xét tuyển: ${roundName}`,
+      });
+    } catch (error) {
+      console.error("Failed to create notification log", error);
+    }
+
     message.success("Nộp hồ sơ thành công!");
     navigate("/candidate/applications");
   };
@@ -186,6 +240,16 @@ export const ApplicationForm: React.FC = () => {
         />
       )}
 
+      {isProfileComplete && activeRounds.length === 0 && (
+        <Alert
+          message="Chưa có đợt xét tuyển"
+          description="Hiện chưa có đợt xét tuyển nào đang diễn ra. Bạn không thể nộp hồ sơ vào lúc này."
+          type="error"
+          showIcon
+          style={{ marginBottom: 24 }}
+        />
+      )}
+
       <Card>
         {!isProfileComplete ? (
           <EmptyState description="Vui lòng cập nhật thông tin cá nhân để tiếp tục" />
@@ -195,6 +259,7 @@ export const ApplicationForm: React.FC = () => {
           layout="vertical"
           onValuesChange={handleValuesChange}
           onFinish={onFinish}
+          initialValues={{ priorityGroup: "none", evidenceCategory: "other" }}
         >
           <Divider />
           <h3>1. Thông tin thí sinh</h3>
@@ -216,10 +281,41 @@ export const ApplicationForm: React.FC = () => {
             </Col>
           </Row>
 
+          <Row gutter={16} style={{ marginTop: 16 }}>
+            <Col xs={24} sm={8}>
+              <Form.Item 
+                name="priorityGroup" 
+                label="Đối tượng ưu tiên"
+                rules={[{ required: true, message: "Vui lòng chọn đối tượng ưu tiên" }]}
+              >
+                <Select>
+                  {Object.entries(PRIORITY_GROUPS).map(([code, config]) => (
+                    <Option key={code} value={code}>
+                      {config.label}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
           <Divider />
           <h3>2. Chọn nguyện vọng</h3>
           <Row gutter={16}>
-            <Col xs={24} sm={8}>
+            <Col xs={24} sm={12} md={6}>
+              <Form.Item 
+                name="admissionRoundId" 
+                label="Đợt xét tuyển" 
+                rules={[{ required: activeRounds.length > 0, message: "Vui lòng chọn đợt xét tuyển" }]}
+              >
+                <Select placeholder="Chọn đợt xét tuyển" disabled={activeRounds.length === 0}>
+                  {activeRounds.map(r => (
+                    <Option key={r.id} value={r.id}>{r.code} - {r.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12} md={6}>
               <Form.Item 
                 name="universityId" 
                 label="Trường đại học" 
@@ -239,7 +335,7 @@ export const ApplicationForm: React.FC = () => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} sm={8}>
+            <Col xs={24} sm={12} md={6}>
               <Form.Item 
                 name="majorId" 
                 label="Ngành học" 
@@ -260,7 +356,7 @@ export const ApplicationForm: React.FC = () => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} sm={8}>
+            <Col xs={24} sm={12} md={6}>
               <Form.Item 
                 name="subjectGroupCode" 
                 label="Tổ hợp xét tuyển" 
@@ -325,10 +421,20 @@ export const ApplicationForm: React.FC = () => {
                   );
                 })}
               </Row>
-              <Row>
-                <Col span={24}>
+              <Row gutter={16}>
+                <Col xs={24} sm={8}>
+                  <Card size="small" style={{ background: "#fafafa" }}>
+                    <Statistic title="Tổng điểm thi" value={totalScore} precision={2} />
+                  </Card>
+                </Col>
+                <Col xs={24} sm={8}>
+                  <Card size="small" style={{ background: "#e6f7ff", borderColor: "#91caff" }}>
+                    <Statistic title="Điểm ưu tiên" value={currentPriorityScore} precision={2} />
+                  </Card>
+                </Col>
+                <Col xs={24} sm={8}>
                   <Card size="small" style={{ background: "#f6ffed", borderColor: "#b7eb8f" }}>
-                    <Statistic title="Tổng điểm xét tuyển" value={totalScore} precision={2} />
+                    <Statistic title="Tổng điểm xét tuyển" value={finalAdmissionScore} precision={2} valueStyle={{ color: "#52c41a", fontWeight: "bold" }} />
                   </Card>
                 </Col>
               </Row>
@@ -337,6 +443,22 @@ export const ApplicationForm: React.FC = () => {
 
           <Divider />
           <h3>4. Minh chứng đính kèm</h3>
+          <Row gutter={16}>
+            <Col xs={24} sm={8}>
+              <Form.Item 
+                name="evidenceCategory" 
+                label="Loại minh chứng (sẽ được gán cho tất cả các file tải lên)"
+              >
+                <Select>
+                  {Object.entries(EVIDENCE_CATEGORIES).map(([code, config]) => (
+                    <Option key={code} value={code}>
+                      {config.label}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item label="Upload Học bạ / Giấy chứng nhận (Tối đa 5 file, định dạng JPG/PNG/PDF)">
             <Upload
               multiple
@@ -364,7 +486,7 @@ export const ApplicationForm: React.FC = () => {
           </Form.Item>
 
           <Form.Item style={{ marginTop: 24 }}>
-            <Button type="primary" htmlType="submit" size="large" block disabled={!isProfileComplete}>
+            <Button type="primary" htmlType="submit" size="large" block disabled={!isProfileComplete || activeRounds.length === 0}>
               Nộp hồ sơ
             </Button>
           </Form.Item>

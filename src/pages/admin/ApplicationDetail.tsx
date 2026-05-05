@@ -9,8 +9,14 @@ import { useApplicationStore } from "../../stores/application.store";
 import { useCandidateStore } from "../../stores/candidate.store";
 import { useUniversityStore } from "../../stores/university.store";
 import { useMajorStore } from "../../stores/major.store";
+import { useAdmissionRoundStore } from "../../stores/admissionRound.store";
 import { useAuthStore } from "../../stores/auth.store";
+import { useNotificationLogStore } from "../../stores/notificationLog.store";
 import { formatDate, formatDateTime } from "../../utils/date";
+import { formatFileSize } from "../../utils/file";
+import { getPriorityGroupLabel } from "../../constants/priorityGroups";
+import { getEvidenceCategoryLabel } from "../../constants/evidenceCategories";
+import { Empty } from "antd";
 
 const { Title, Text } = Typography;
 
@@ -22,6 +28,8 @@ export const AdminApplicationDetail: React.FC = () => {
   const { getCandidateById } = useCandidateStore();
   const { getUniversityById } = useUniversityStore();
   const { getMajorById } = useMajorStore();
+  const { getAdmissionRoundById } = useAdmissionRoundStore();
+  const { createNotificationLog } = useNotificationLogStore();
   const { currentUser } = useAuthStore();
 
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
@@ -45,6 +53,7 @@ export const AdminApplicationDetail: React.FC = () => {
   const candidate = getCandidateById(application.candidateId);
   const university = getUniversityById(application.universityId);
   const major = getMajorById(application.majorId);
+  const admissionRound = application.admissionRoundId ? getAdmissionRoundById(application.admissionRoundId) : undefined;
 
   const genderMap: Record<string, string> = {
     male: "Nam",
@@ -83,18 +92,39 @@ export const AdminApplicationDetail: React.FC = () => {
         </Space>
       )
     },
-    { title: "Định dạng", dataIndex: "type", key: "type" },
+    { 
+      title: "Loại minh chứng", 
+      dataIndex: "category", 
+      key: "category",
+      render: (category: string) => getEvidenceCategoryLabel(category)
+    },
+    { 
+      title: "Định dạng", 
+      dataIndex: "type", 
+      key: "type",
+      render: (type: string) => type ? type.toUpperCase() : "Chưa cập nhật"
+    },
     { 
       title: "Kích thước", 
       dataIndex: "size", 
       key: "size",
-      render: (size: number) => size ? `${(size / 1024 / 1024).toFixed(2)} MB` : "Không rõ"
+      render: (size: number) => formatFileSize(size)
+    },
+    { 
+      title: "Ngày tải lên", 
+      dataIndex: "uploadedAt", 
+      key: "uploadedAt",
+      render: (date: string) => date ? formatDateTime(date) : "Chưa cập nhật"
     },
     { 
       title: "Hành động", 
       key: "action",
       render: (_: any, record: any) => (
-        <Button type="link" disabled={!record.url} href={record.url} target="_blank">Xem file</Button>
+        record.url ? (
+          <Button type="link" href={record.url} target="_blank">Xem file</Button>
+        ) : (
+          <Text type="secondary">Không có liên kết</Text>
+        )
       )
     }
   ];
@@ -105,6 +135,27 @@ export const AdminApplicationDetail: React.FC = () => {
       return;
     }
     approveApplication(application.id, currentUser.id);
+
+    try {
+      if (candidate) {
+        const uniName = university?.name || "Không rõ trường";
+        const majorName = major?.name || "Không rõ ngành";
+
+        createNotificationLog({
+          recipientUserId: candidate.id,
+          recipientEmail: candidate.email || "unknown@example.com",
+          recipientName: candidate.fullName || "Không rõ thí sinh",
+          applicationId: application.id,
+          type: "application_approved",
+          channel: "email",
+          subject: "Hồ sơ xét tuyển của bạn đã được duyệt",
+          content: `Mã hồ sơ: ${application.applicationCode || "Chưa cập nhật"}\nTrường: ${uniName}\nNgành: ${majorName}\nNgày duyệt: ${formatDateTime(new Date().toISOString())}`,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to create notification log", error);
+    }
+
     message.success("Duyệt hồ sơ thành công");
   };
 
@@ -114,6 +165,27 @@ export const AdminApplicationDetail: React.FC = () => {
       return;
     }
     rejectApplication(application.id, currentUser.id, values.reason);
+
+    try {
+      if (candidate) {
+        const uniName = university?.name || "Không rõ trường";
+        const majorName = major?.name || "Không rõ ngành";
+
+        createNotificationLog({
+          recipientUserId: candidate.id,
+          recipientEmail: candidate.email || "unknown@example.com",
+          recipientName: candidate.fullName || "Không rõ thí sinh",
+          applicationId: application.id,
+          type: "application_rejected",
+          channel: "email",
+          subject: "Hồ sơ xét tuyển của bạn bị từ chối",
+          content: `Mã hồ sơ: ${application.applicationCode || "Chưa cập nhật"}\nTrường: ${uniName}\nNgành: ${majorName}\nLý do: ${values.reason}`,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to create notification log", error);
+    }
+
     setIsRejectModalOpen(false);
     form.resetFields();
     message.success("Từ chối hồ sơ thành công");
@@ -131,6 +203,11 @@ export const AdminApplicationDetail: React.FC = () => {
         return null;
     }
   };
+
+  const priorityGroup = application.priorityGroup ?? "none";
+  const priorityScore = application.priorityScore ?? 0;
+  const examTotalScore = application.totalScore ?? 0;
+  const finalAdmissionScore = examTotalScore + priorityScore;
 
   return (
     <div>
@@ -181,6 +258,9 @@ export const AdminApplicationDetail: React.FC = () => {
 
           <Card title="Thông tin nguyện vọng" style={{ marginBottom: 24 }}>
             <Descriptions bordered column={1}>
+              <Descriptions.Item label="Đợt xét tuyển">
+                <Text strong>{admissionRound ? `${admissionRound.code} - ${admissionRound.name}` : "Chưa xác định đợt xét tuyển"}</Text>
+              </Descriptions.Item>
               <Descriptions.Item label="Trường đại học">
                 <strong>{university?.name || "Không rõ trường"}</strong> <Text type="secondary">({university?.code || "Chưa cập nhật"})</Text>
               </Descriptions.Item>
@@ -193,6 +273,9 @@ export const AdminApplicationDetail: React.FC = () => {
               <Descriptions.Item label="Điểm sàn ngành">
                 {major?.minScore !== undefined ? <Text strong>{major.minScore}</Text> : "Chưa cập nhật"}
               </Descriptions.Item>
+              <Descriptions.Item label="Đối tượng ưu tiên">
+                <Text strong>{getPriorityGroupLabel(priorityGroup)}</Text>
+              </Descriptions.Item>
             </Descriptions>
           </Card>
 
@@ -201,12 +284,13 @@ export const AdminApplicationDetail: React.FC = () => {
               <Table 
                 columns={evidenceColumns} 
                 dataSource={safeEvidenceFiles} 
-                rowKey={(_, index) => index?.toString() || ""}
+                rowKey={(record) => record.id || Math.random().toString()}
                 pagination={false}
                 size="small"
+                scroll={{ x: true }}
               />
             ) : (
-              <EmptyState description="Chưa có file minh chứng" />
+              <Empty description="Chưa có file minh chứng" />
             )}
           </Card>
         </Col>
@@ -265,9 +349,12 @@ export const AdminApplicationDetail: React.FC = () => {
                   bordered
                 />
                 <div style={{ marginTop: 16, textAlign: "right" }}>
-                  <Text style={{ fontSize: 16 }}>Tổng điểm: </Text>
+                  <Text style={{ fontSize: 14, display: "block" }}>Điểm thi: {examTotalScore.toFixed(2)}</Text>
+                  <Text style={{ fontSize: 14, display: "block" }}>Điểm ưu tiên: {priorityScore}</Text>
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Text style={{ fontSize: 16 }}>Tổng điểm xét tuyển: </Text>
                   <Text type="danger" strong style={{ fontSize: 20 }}>
-                    {application.totalScore !== undefined ? application.totalScore.toFixed(2) : "Chưa cập nhật"}
+                    {finalAdmissionScore.toFixed(2)}
                   </Text>
                 </div>
               </>
