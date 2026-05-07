@@ -8,6 +8,7 @@ interface NotificationLogState {
   getNotificationLogsByUserId: (userId: string) => NotificationLog[];
   getNotificationLogsByApplicationId: (applicationId: string) => NotificationLog[];
   getAllNotificationLogs: () => NotificationLog[];
+  markNotificationAsRead: (notificationId: string) => void;
 }
 
 export const useNotificationLogStore = create<NotificationLogState>((set, get) => ({
@@ -18,6 +19,7 @@ export const useNotificationLogStore = create<NotificationLogState>((set, get) =
       ...data,
       id: `notif_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
       status: data.status || "sent",
+      isRead: false,
       createdAt: new Date().toISOString()
     };
     
@@ -42,5 +44,16 @@ export const useNotificationLogStore = create<NotificationLogState>((set, get) =
   getAllNotificationLogs: () => {
     const safeLogs = Array.isArray(get().notificationLogs) ? get().notificationLogs : [];
     return safeLogs;
+  },
+  
+  markNotificationAsRead: (notificationId) => {
+    set((state) => {
+      const safeLogs = Array.isArray(state.notificationLogs) ? state.notificationLogs : [];
+      return {
+        notificationLogs: safeLogs.map(log => 
+          log.id === notificationId ? { ...log, isRead: true } : log
+        )
+      };
+    });
   }
 }));

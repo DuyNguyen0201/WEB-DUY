@@ -20,6 +20,7 @@ import { ApplicationForm } from "../pages/candidate/ApplicationForm";
 import { MyApplications } from "../pages/candidate/MyApplications";
 import { ApplicationDetail as CandidateApplicationDetail } from "../pages/candidate/ApplicationDetail";
 import { Results } from "../pages/candidate/Results";
+import { NotificationList as CandidateNotificationList } from "../pages/candidate/NotificationList";
 
 // Admin Pages
 import { AdminDashboard } from "../pages/admin/Dashboard";
@@ -30,7 +31,7 @@ import { AdmissionRoundList } from "../pages/admin/AdmissionRoundList";
 import { CandidateManagement } from "../pages/admin/CandidateManagement";
 import { ApplicationManagement } from "../pages/admin/ApplicationManagement";
 import { AdminApplicationDetail } from "../pages/admin/ApplicationDetail";
-import { NotificationLogList } from "../pages/admin/NotificationLogList";
+import { NotificationLogList as AdminNotificationList } from "../pages/admin/NotificationLogList";
 
 // Error Pages
 import { ForbiddenPage } from "../pages/errors/ForbiddenPage";
@@ -61,6 +62,7 @@ export const router = createBrowserRouter([
           { path: "apply", element: <ApplicationForm /> },
           { path: "applications", element: <MyApplications /> },
           { path: "applications/:id", element: <CandidateApplicationDetail /> },
+          { path: "notifications", element: <CandidateNotificationList /> },
           { path: "results", element: <Results /> },
         ],
       },
@@ -82,7 +84,7 @@ export const router = createBrowserRouter([
           { path: "candidates", element: <CandidateManagement /> },
           { path: "applications", element: <ApplicationManagement /> },
           { path: "applications/:id", element: <AdminApplicationDetail /> },
-          { path: "notifications", element: <NotificationLogList /> },
+          { path: "notifications", element: <AdminNotificationList /> },
         ],
       },
     ],

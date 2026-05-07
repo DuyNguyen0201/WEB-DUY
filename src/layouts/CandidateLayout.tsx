@@ -8,7 +8,8 @@ import {
   FormOutlined, 
   FolderOpenOutlined, 
   CheckCircleOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  BellOutlined
 } from "@ant-design/icons";
 import { AppLogo } from "../components/common/AppLogo";
 import { useAuthStore } from "../stores/auth.store";
@@ -32,6 +33,7 @@ export const CandidateLayout: React.FC = () => {
     { key: "/candidate/universities", icon: <BankOutlined />, label: "Danh sách trường" },
     { key: "/candidate/apply", icon: <FormOutlined />, label: "Nộp hồ sơ" },
     { key: "/candidate/applications", icon: <FolderOpenOutlined />, label: "Hồ sơ của tôi" },
+    { key: "/candidate/notifications", icon: <BellOutlined />, label: "Thông báo" },
     { key: "/candidate/results", icon: <CheckCircleOutlined />, label: "Kết quả xét tuyển" },
   ];
 

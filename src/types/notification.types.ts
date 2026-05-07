@@ -19,5 +19,6 @@ export interface NotificationLog {
   subject: string;
   content: string;
   status: NotificationStatus;
+  isRead?: boolean;
   createdAt: string;
 }

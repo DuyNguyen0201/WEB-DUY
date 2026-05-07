@@ -36,8 +36,8 @@ export const AdminLayout: React.FC = () => {
     { key: "/admin/subject-groups", icon: <AppstoreOutlined />, label: "Quản lý tổ hợp" },
     { key: "/admin/candidates", icon: <TeamOutlined />, label: "Quản lý thí sinh" },
     { key: "/admin/applications", icon: <FolderOpenOutlined />, label: "Quản lý hồ sơ" },
+    { key: "/admin/notifications", icon: <BellOutlined />, label: "Trung tâm thông báo" },
     { key: "/admin/admission-rounds", icon: <CalendarOutlined />, label: "Quản lý đợt xét tuyển" },
-    { key: "/admin/notifications", icon: <BellOutlined />, label: "Lịch sử thông báo" },
   ];
 
   const userMenu = {
