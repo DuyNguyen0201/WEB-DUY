@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Card, Row, Col, Input, Select, Button, Space, Typography } from "antd";
 import { SearchOutlined, BankOutlined, EnvironmentOutlined, GlobalOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PageHeader } from "../../components/common/PageHeader";
 import { EmptyState } from "../../components/common/EmptyState";
 import { useUniversityStore } from "../../stores/university.store";
@@ -11,6 +11,9 @@ const { Option } = Select;
 
 export const UniversityList: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const basePath = location.pathname.startsWith('/candidate') ? '/candidate' : '';
+  
   const { getActiveUniversities } = useUniversityStore();
   const activeUniversities = getActiveUniversities();
 
@@ -84,7 +87,7 @@ export const UniversityList: React.FC = () => {
                 style={{ height: "100%", display: "flex", flexDirection: "column" }}
                 bodyStyle={{ flex: 1, display: "flex", flexDirection: "column" }}
                 actions={[
-                  <Button type="link" onClick={() => navigate(`/candidate/universities/${university.id}`)}>
+                  <Button type="link" onClick={() => navigate(`${basePath}/universities/${university.id}`)}>
                     Xem chi tiết
                   </Button>,
                   <Button type="primary" onClick={() => navigate(`/candidate/apply?universityId=${university.id}`)}>

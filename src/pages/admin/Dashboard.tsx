@@ -245,66 +245,98 @@ export const AdminDashboard: React.FC = () => {
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Tổng thí sinh" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng thí sinh</span>}
               value={safeCandidates.length} 
-              prefix={<TeamOutlined style={{ color: "#1890ff" }} />} 
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #e0c3fc, #8ec5fc)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <TeamOutlined style={{ color: "#2563eb", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Tổng trường" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng trường</span>}
               value={safeUniversities.length} 
-              prefix={<BankOutlined style={{ color: "#722ed1" }} />} 
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <BankOutlined style={{ color: "#7c3aed", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Tổng ngành" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng ngành</span>}
               value={safeMajors.length} 
-              prefix={<BookOutlined style={{ color: "#13c2c2" }} />} 
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #a1c4fd, #c2e9fb)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <BookOutlined style={{ color: "#0284c7", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Tổng hồ sơ" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng hồ sơ</span>}
               value={stats.total} 
-              prefix={<FileTextOutlined style={{ color: "#2f54eb" }} />} 
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #f6d365, #fda085)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <FileTextOutlined style={{ color: "#ea580c", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Chờ duyệt" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Chờ duyệt</span>}
               value={stats.pending} 
-              prefix={<ClockCircleOutlined style={{ color: "#faad14" }} />} 
-              valueStyle={{ color: "#faad14" }}
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #fdfbfb, #ebedee)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <ClockCircleOutlined style={{ color: "#ca8a04", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#eab308" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Đã duyệt" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Đã duyệt</span>}
               value={stats.approved} 
-              prefix={<CheckCircleOutlined style={{ color: "#52c41a" }} />} 
-              valueStyle={{ color: "#52c41a" }}
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #d4fc79, #96e6a1)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <CheckCircleOutlined style={{ color: "#16a34a", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#22c55e" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title="Từ chối" 
+              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Từ chối</span>}
               value={stats.rejected} 
-              prefix={<CloseCircleOutlined style={{ color: "#ff4d4f" }} />} 
-              valueStyle={{ color: "#ff4d4f" }}
+              prefix={
+                <div style={{ background: "linear-gradient(135deg, #ff9a9e, #fecfef)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <CloseCircleOutlined style={{ color: "#dc2626", fontSize: "20px" }} />
+                </div>
+              }
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#ef4444" }}
             />
           </Card>
         </Col>

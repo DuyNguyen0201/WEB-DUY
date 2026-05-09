@@ -15,7 +15,7 @@ import { RegisterPage } from "../pages/public/RegisterPage";
 import { CandidateDashboard } from "../pages/candidate/Dashboard";
 import { Profile } from "../pages/candidate/Profile";
 import { UniversityList } from "../pages/candidate/UniversityList";
-import { UniversityDetail as CandidateUniversityDetail } from "../pages/candidate/UniversityDetail";
+import { UniversityDetail } from "../pages/candidate/UniversityDetail";
 import { ApplicationForm } from "../pages/candidate/ApplicationForm";
 import { MyApplications } from "../pages/candidate/MyApplications";
 import { ApplicationDetail as CandidateApplicationDetail } from "../pages/candidate/ApplicationDetail";
@@ -45,6 +45,8 @@ export const router = createBrowserRouter([
       { index: true, element: <LandingPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "universities", element: <UniversityList /> },
+      { path: "universities/:id", element: <UniversityDetail /> },
     ],
   },
   {
@@ -58,7 +60,7 @@ export const router = createBrowserRouter([
           { path: "dashboard", element: <CandidateDashboard /> },
           { path: "profile", element: <Profile /> },
           { path: "universities", element: <UniversityList /> },
-          { path: "universities/:id", element: <CandidateUniversityDetail /> },
+          { path: "universities/:id", element: <UniversityDetail /> },
           { path: "apply", element: <ApplicationForm /> },
           { path: "applications", element: <MyApplications /> },
           { path: "applications/:id", element: <CandidateApplicationDetail /> },

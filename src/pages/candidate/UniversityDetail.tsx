@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Card, Result, Button, Descriptions, Table, Typography, Space, Tag, Row, Col } from "antd";
 import { BankOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { PageHeader } from "../../components/common/PageHeader";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useUniversityStore } from "../../stores/university.store";
 import { useMajorStore } from "../../stores/major.store";
 import { formatCurrency } from "../../utils/format";
@@ -12,6 +12,9 @@ const { Title, Paragraph, Text } = Typography;
 export const UniversityDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const basePath = location.pathname.startsWith('/candidate') ? '/candidate' : '';
+  const listPath = basePath ? `${basePath}/universities` : '/universities';
   
   const { getUniversityById } = useUniversityStore();
   const { getActiveMajorsByUniversityId } = useMajorStore();
@@ -34,7 +37,7 @@ export const UniversityDetail: React.FC = () => {
             status="404"
             title="Trường không tồn tại"
             subTitle="Xin lỗi, trường đại học bạn tìm kiếm không tồn tại hoặc đã ngừng tuyển sinh."
-            extra={<Button type="primary" onClick={() => navigate("/candidate/universities")}>Quay lại danh sách trường</Button>}
+            extra={<Button type="primary" onClick={() => navigate(listPath)}>Quay lại danh sách trường</Button>}
           />
         </Card>
       </div>
@@ -94,7 +97,7 @@ export const UniversityDetail: React.FC = () => {
       <PageHeader 
         title="Chi tiết trường đại học" 
         breadcrumbs={[
-          { title: "Danh sách trường", href: "/candidate/universities" }, 
+          { title: "Danh sách trường", href: listPath }, 
           { title: university.shortName }
         ]} 
         extra={

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Card, Form, Input, Button, Typography, message } from "antd";
+import { Form, Input, Button, Typography, message, Divider } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleOutlined, FacebookOutlined } from "@ant-design/icons";
 import { useAuthStore } from "../../stores/auth.store";
 
 const { Title, Text } = Typography;
@@ -25,44 +26,52 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
+  const handleSocialLogin = () => {
+    message.info("Tính năng đăng ký qua Mạng xã hội đang được phát triển.");
+  };
+
   return (
-    <Card style={{ width: 450, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
-      <div style={{ textAlign: "center", marginBottom: 24 }}>
-        <Title level={3}>Đăng ký thí sinh</Title>
-        <Text type="secondary">Tạo tài khoản để nộp hồ sơ xét tuyển</Text>
+    <div className="glass-card animate-fade-up" style={{ width: 480, padding: "40px", marginTop: "20px", marginBottom: "20px" }}>
+      <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <Title level={2} style={{ color: "white", marginBottom: 8 }}>Bắt đầu hành trình</Title>
+        <Text style={{ color: "rgba(255,255,255,0.6)" }}>Tạo tài khoản xét tuyển đại học của bạn ngay hôm nay</Text>
       </div>
 
-      <Form layout="vertical" onFinish={onFinish}>
-        <Form.Item 
-          label="Họ và tên" 
-          name="fullName" 
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
-        >
-          <Input placeholder="Nguyễn Văn A" />
-        </Form.Item>
+      <Form layout="vertical" onFinish={onFinish} className="dark-form" requiredMark={false}>
+        <div style={{ display: "flex", gap: "16px" }}>
+          <Form.Item 
+            label="Họ và tên" 
+            name="fullName" 
+            rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
+            style={{ flex: 1 }}
+          >
+            <Input className="glass-input" size="large" placeholder="Nguyễn Văn A" />
+          </Form.Item>
+
+          <Form.Item 
+            label="Số điện thoại" 
+            name="phone" 
+            rules={[{ required: true, message: "Vui lòng nhập SĐT" }]}
+            style={{ flex: 1 }}
+          >
+            <Input className="glass-input" size="large" placeholder="0987654321" />
+          </Form.Item>
+        </div>
 
         <Form.Item 
           label="Email" 
           name="email" 
           rules={[{ required: true, message: "Vui lòng nhập email" }, { type: "email", message: "Email không hợp lệ" }]}
         >
-          <Input placeholder="Nhập email của bạn" />
+          <Input className="glass-input" size="large" placeholder="Nhập địa chỉ email của bạn" />
         </Form.Item>
         
         <Form.Item 
-          label="Số điện thoại" 
-          name="phone" 
-          rules={[{ required: true, message: "Vui lòng nhập số điện thoại" }]}
-        >
-          <Input placeholder="Nhập số điện thoại" />
-        </Form.Item>
-
-        <Form.Item 
           label="Mật khẩu" 
           name="password" 
-          rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+          rules={[{ required: true, message: "Vui lòng tạo mật khẩu" }]}
         >
-          <Input.Password placeholder="Tạo mật khẩu" />
+          <Input.Password className="glass-input" size="large" placeholder="Tạo mật khẩu bảo mật" />
         </Form.Item>
         
         <Form.Item 
@@ -81,19 +90,43 @@ export const RegisterPage: React.FC = () => {
             }),
           ]}
         >
-          <Input.Password placeholder="Nhập lại mật khẩu" />
+          <Input.Password className="glass-input" size="large" placeholder="Nhập lại mật khẩu" />
         </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block loading={loading}>
-            Đăng ký
+        <Form.Item style={{ marginTop: 24, marginBottom: 16 }}>
+          <Button className="btn-glow-purple" size="large" htmlType="submit" block loading={loading} style={{ height: "50px", fontSize: "16px", fontWeight: 600 }}>
+            Tạo Tài Khoản
           </Button>
         </Form.Item>
+
+        <Divider style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }} plain>Đăng ký nhanh</Divider>
+
+        <div style={{ display: "flex", gap: "16px" }}>
+          <Button 
+            block 
+            size="large" 
+            icon={<GoogleOutlined />} 
+            onClick={handleSocialLogin}
+            style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)", color: "white" }}
+          >
+            Google
+          </Button>
+          <Button 
+            block 
+            size="large" 
+            icon={<FacebookOutlined />} 
+            onClick={handleSocialLogin}
+            style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)", color: "white" }}
+          >
+            Facebook
+          </Button>
+        </div>
       </Form>
 
-      <div style={{ textAlign: "center", marginTop: 16 }}>
-        Đã có tài khoản? <Link to="/login">Đăng nhập ngay</Link>
+      <div style={{ textAlign: "center", marginTop: 24 }}>
+        <Text style={{ color: "rgba(255,255,255,0.6)" }}>Đã có tài khoản? </Text>
+        <Link to="/login" style={{ color: "var(--neon-purple)", fontWeight: 600 }}>Đăng nhập ngay</Link>
       </div>
-    </Card>
+    </div>
   );
 };
