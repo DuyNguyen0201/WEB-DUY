@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Card, Table, Input, Tag, Select, Typography, Empty, Space, Button, Modal, Form, DatePicker, InputNumber, message } from "antd";
-import { SearchOutlined, PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { PageHeader } from "../../components/common/PageHeader";
 import { useAdmissionRoundStore } from "../../stores/admissionRound.store";
@@ -277,7 +277,8 @@ export const AdmissionRoundList: React.FC = () => {
       </Card>
 
       <Modal
-        title={editingRound ? "Cập nhật đợt xét tuyển" : "Thêm đợt xét tuyển"}
+        className="dark-modal"
+        title={<span style={{ color: "#fff" }}>{editingRound ? "Cập nhật đợt xét tuyển" : "Thêm đợt xét tuyển"}</span>}
         open={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
@@ -285,6 +286,8 @@ export const AdmissionRoundList: React.FC = () => {
         cancelText="Hủy"
         destroyOnClose
         width={600}
+
+        closeIcon={<CloseOutlined style={{ color: "rgba(255,255,255,0.6)" }} />}
       >
         <Form form={form} layout="vertical">
           <Space size="large" style={{ display: 'flex', width: '100%' }}>

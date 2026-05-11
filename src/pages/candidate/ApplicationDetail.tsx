@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Card, Result, Button, Descriptions, Typography, Tag, Alert, Row, Col } from "antd";
+import { Card, Result, Button, Descriptions, Typography, Tag, Alert, Row, Col, Steps, Table, Space, Empty } from "antd";
 import { PageHeader } from "../../components/common/PageHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import { ApplicationStatusTag } from "../../components/status/ApplicationStatusTag";
@@ -13,8 +13,7 @@ import { formatDateTime } from "../../utils/date";
 import { formatFileSize } from "../../utils/file";
 import { getPriorityGroupLabel } from "../../constants/priorityGroups";
 import { getEvidenceCategoryLabel } from "../../constants/evidenceCategories";
-import { PaperClipOutlined } from "@ant-design/icons";
-import { Table, Space, Empty } from "antd";
+import { PaperClipOutlined, CheckCircleOutlined, SyncOutlined, CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -126,6 +125,18 @@ export const ApplicationDetail: React.FC = () => {
   const examTotalScore = application.totalScore ?? 0;
   const finalAdmissionScore = examTotalScore + priorityScore;
 
+  const getStepCurrent = (status: string) => {
+    if (status === "pending") return 1;
+    if (status === "approved" || status === "rejected") return 2;
+    return 0;
+  };
+
+  const getStepStatus = (status: string) => {
+    if (status === "rejected") return "error";
+    if (status === "approved") return "finish";
+    return "process";
+  };
+
   return (
     <div>
       <PageHeader 
@@ -141,12 +152,38 @@ export const ApplicationDetail: React.FC = () => {
           <Card>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
               <div>
-                <Title level={4} style={{ margin: 0 }}>Mã hồ sơ: {application.applicationCode}</Title>
-                <Text type="secondary">Đã nộp vào: {formatDateTime(application.submittedAt)}</Text>
+                <Title level={4} style={{ margin: 0, color: "#fff" }}>Mã hồ sơ: {application.applicationCode}</Title>
+                <Text style={{ color: "rgba(255,255,255,0.6)" }}>Đã nộp vào: {formatDateTime(application.submittedAt)}</Text>
               </div>
               <div>
                 <ApplicationStatusTag status={application.status} />
               </div>
+            </div>
+
+            <div style={{ marginBottom: 32, padding: "24px", background: "rgba(0,0,0,0.2)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <Title level={5} style={{ marginBottom: 24, color: "#fff" }}>Tiến trình hồ sơ</Title>
+              <Steps 
+                current={getStepCurrent(application.status)} 
+                status={getStepStatus(application.status)}
+                className="cyber-steps"
+                items={[
+                  { 
+                    title: 'Đã nộp hồ sơ', 
+                    description: 'Hệ thống đã ghi nhận',
+                    icon: <UploadOutlined />
+                  },
+                  { 
+                    title: 'Đang xét duyệt', 
+                    description: 'Hội đồng đang đánh giá',
+                    icon: application.status === "pending" ? <SyncOutlined spin /> : undefined
+                  },
+                  { 
+                    title: 'Kết quả', 
+                    description: application.status === 'approved' ? 'Trúng tuyển' : application.status === 'rejected' ? 'Từ chối' : 'Chưa có kết quả',
+                    icon: application.status === 'approved' ? <CheckCircleOutlined /> : application.status === 'rejected' ? <CloseCircleOutlined /> : undefined
+                  },
+                ]} 
+              />
             </div>
 
             {application.status === "rejected" && application.adminNote && (

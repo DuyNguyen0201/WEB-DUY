@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Card, Table, Input, Tag, Space, Typography, Empty, Button, Modal, Form, Select, message, Tooltip } from "antd";
-import { SearchOutlined, PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { PageHeader } from "../../components/common/PageHeader";
 import { useSubjectGroupStore } from "../../stores/subjectGroup.store";
 import { useMajorStore } from "../../stores/major.store";
@@ -222,13 +222,16 @@ export const SubjectGroupList: React.FC = () => {
       </Card>
 
       <Modal
-        title={editingGroup ? "Cập nhật tổ hợp xét tuyển" : "Thêm tổ hợp xét tuyển"}
+        className="dark-modal"
+        title={<span style={{ color: "#fff" }}>{editingGroup ? "Cập nhật tổ hợp xét tuyển" : "Thêm tổ hợp xét tuyển"}</span>}
         open={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         okText={editingGroup ? "Cập nhật" : "Thêm mới"}
         cancelText="Hủy"
         destroyOnClose
+
+        closeIcon={<CloseOutlined style={{ color: "rgba(255,255,255,0.6)" }} />}
       >
         <Form form={form} layout="vertical">
           <Form.Item

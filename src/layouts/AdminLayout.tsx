@@ -91,7 +91,7 @@ export const AdminLayout: React.FC = () => {
             }}>
               <BankOutlined style={{ fontSize: 24, color: "white" }} />
             </div>
-            {!collapsed && <span style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.5px" }}>UniAdmission</span>}
+            {!collapsed && <span className="glowing-text" style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.5px" }}>UniAdmission</span>}
           </div>
         </div>
         <Menu 
@@ -105,14 +105,7 @@ export const AdminLayout: React.FC = () => {
       </Sider>
       
       <Layout style={{ background: "transparent" }}>
-        <Header className="glass-header acrylic-sidebar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 24px" }}>
-          
-          {/* Spotlight Search */}
-          <div className="global-search-bar">
-            <SearchOutlined style={{ color: "#94a3b8", fontSize: "16px" }} />
-            <input type="text" placeholder="Tìm kiếm hồ sơ, thí sinh..." />
-            <span className="cmd-k-badge">⌘ K</span>
-          </div>
+        <Header className="glass-header acrylic-sidebar" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", padding: "0 24px" }}>
 
           <Dropdown menu={userMenu} placement="bottomRight" arrow>
             <Space style={{ cursor: "pointer", padding: "4px 12px", borderRadius: "30px", transition: "background 0.3s" }} className="hover-bg-gray">
@@ -125,21 +118,22 @@ export const AdminLayout: React.FC = () => {
         <Content style={{ margin: "24px 16px", display: "flex", flexDirection: "column" }}>
           {/* Welcome Banner */}
           <div style={{ 
-            background: "linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)", 
+            background: "linear-gradient(120deg, rgba(138, 43, 226, 0.15) 0%, rgba(0, 240, 255, 0.15) 100%)", 
+            border: "1px solid rgba(0, 240, 255, 0.2)",
             borderRadius: "20px", 
             padding: "32px 40px",
             marginBottom: "24px",
-            boxShadow: "var(--soft-shadow)",
+            boxShadow: "0 0 20px rgba(0, 240, 255, 0.1)",
             position: "relative",
             overflow: "hidden"
           }}>
             <div style={{ position: "relative", zIndex: 1 }}>
-              <Title level={3} style={{ color: "#1f2937", margin: 0 }}>Chào ngày mới, {currentUser?.fullName}! 👋</Title>
-              <Text style={{ color: "#4b5563", fontSize: "16px" }}>Hôm nay là một ngày tuyệt vời để phê duyệt các hồ sơ tuyển sinh mới.</Text>
+              <Title level={3} style={{ color: "#fff", margin: 0, textShadow: "0 2px 10px rgba(0,240,255,0.3)" }}>Chào ngày mới, {currentUser?.fullName}! 👋</Title>
+              <Text style={{ color: "rgba(255,255,255,0.8)", fontSize: "16px" }}>Hôm nay là một ngày tuyệt vời để phê duyệt các hồ sơ tuyển sinh mới.</Text>
             </div>
             {/* Abstract background shapes for banner */}
-            <div style={{ position: "absolute", top: "-50px", right: "-50px", width: "200px", height: "200px", background: "rgba(255,255,255,0.2)", borderRadius: "50%", filter: "blur(20px)" }}></div>
-            <div style={{ position: "absolute", bottom: "-50px", right: "100px", width: "150px", height: "150px", background: "rgba(255,255,255,0.2)", borderRadius: "50%", filter: "blur(20px)" }}></div>
+            <div style={{ position: "absolute", top: "-50px", right: "-50px", width: "200px", height: "200px", background: "rgba(0, 240, 255, 0.2)", borderRadius: "50%", filter: "blur(40px)" }}></div>
+            <div style={{ position: "absolute", bottom: "-50px", right: "100px", width: "150px", height: "150px", background: "rgba(138, 43, 226, 0.2)", borderRadius: "50%", filter: "blur(40px)" }}></div>
           </div>
 
           <div style={{ flex: 1, position: "relative", zIndex: 2 }}>

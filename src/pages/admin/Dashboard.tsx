@@ -245,98 +245,98 @@ export const AdminDashboard: React.FC = () => {
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng thí sinh</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Tổng thí sinh</span>}
               value={safeCandidates.length} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #e0c3fc, #8ec5fc)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <TeamOutlined style={{ color: "#2563eb", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2))", border: "1px solid rgba(0, 240, 255, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <TeamOutlined style={{ color: "var(--neon-cyan)", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#fff", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng trường</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Tổng trường</span>}
               value={safeUniversities.length} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #fbc2eb, #a6c1ee)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <BankOutlined style={{ color: "#7c3aed", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 240, 255, 0.2))", border: "1px solid rgba(138, 43, 226, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <BankOutlined style={{ color: "var(--neon-purple)", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#fff", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng ngành</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Tổng ngành</span>}
               value={safeMajors.length} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #a1c4fd, #c2e9fb)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <BookOutlined style={{ color: "#0284c7", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(16, 185, 129, 0.2))", border: "1px solid rgba(0, 240, 255, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <BookOutlined style={{ color: "var(--neon-cyan)", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#fff", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Tổng hồ sơ</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Tổng hồ sơ</span>}
               value={stats.total} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #f6d365, #fda085)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <FileTextOutlined style={{ color: "#ea580c", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(138, 43, 226, 0.2))", border: "1px solid rgba(16, 185, 129, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <FileTextOutlined style={{ color: "#10b981", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#1e293b" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#fff", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Chờ duyệt</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Chờ duyệt</span>}
               value={stats.pending} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #fdfbfb, #ebedee)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <ClockCircleOutlined style={{ color: "#ca8a04", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "rgba(0, 240, 255, 0.15)", border: "1px solid rgba(0, 240, 255, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <ClockCircleOutlined style={{ color: "var(--neon-cyan)", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#eab308" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "var(--neon-cyan)", textShadow: "0 0 10px rgba(0,240,255,0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Đã duyệt</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Đã duyệt</span>}
               value={stats.approved} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #d4fc79, #96e6a1)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <CheckCircleOutlined style={{ color: "#16a34a", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "rgba(16, 185, 129, 0.15)", border: "1px solid rgba(16, 185, 129, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <CheckCircleOutlined style={{ color: "#10b981", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#22c55e" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#10b981", textShadow: "0 0 10px rgba(16, 185, 129, 0.3)" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card bordered={false}>
             <Statistic 
-              title={<span style={{ fontWeight: 600, color: "#64748b" }}>Từ chối</span>}
+              title={<span style={{ fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>Từ chối</span>}
               value={stats.rejected} 
               prefix={
-                <div style={{ background: "linear-gradient(135deg, #ff9a9e, #fecfef)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
-                  <CloseCircleOutlined style={{ color: "#dc2626", fontSize: "20px" }} />
+                <div className="hover-pulse" style={{ background: "rgba(239, 68, 68, 0.15)", border: "1px solid rgba(239, 68, 68, 0.3)", padding: "10px", borderRadius: "12px", display: "inline-flex", marginRight: "8px" }}>
+                  <CloseCircleOutlined style={{ color: "#ef4444", fontSize: "20px" }} />
                 </div>
               }
-              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#ef4444" }}
+              valueStyle={{ fontWeight: 800, fontSize: "28px", color: "#ef4444", textShadow: "0 0 10px rgba(239, 68, 68, 0.3)" }}
             />
           </Card>
         </Col>
@@ -347,24 +347,24 @@ export const AdminDashboard: React.FC = () => {
           <Card title={<Title level={5} style={{ margin: 0 }}>Thống kê hồ sơ theo trạng thái</Title>} bordered={false} style={{ height: '100%' }}>
             <div style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                <Typography.Text>Chờ duyệt</Typography.Text>
-                <Typography.Text strong>{stats.pending} ({percentPending.toFixed(1)}%)</Typography.Text>
+                <Typography.Text style={{ color: 'rgba(255,255,255,0.8)' }}>Chờ duyệt</Typography.Text>
+                <Typography.Text strong style={{ color: '#fff' }}>{stats.pending} ({percentPending.toFixed(1)}%)</Typography.Text>
               </div>
-              <Progress percent={percentPending} strokeColor="#faad14" showInfo={false} />
+              <Progress percent={percentPending} strokeColor="#00F0FF" showInfo={false} trailColor="rgba(255,255,255,0.1)" />
             </div>
             <div style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                <Typography.Text>Đã duyệt</Typography.Text>
-                <Typography.Text strong>{stats.approved} ({percentApproved.toFixed(1)}%)</Typography.Text>
+                <Typography.Text style={{ color: 'rgba(255,255,255,0.8)' }}>Đã duyệt</Typography.Text>
+                <Typography.Text strong style={{ color: '#fff' }}>{stats.approved} ({percentApproved.toFixed(1)}%)</Typography.Text>
               </div>
-              <Progress percent={percentApproved} strokeColor="#52c41a" showInfo={false} />
+              <Progress percent={percentApproved} strokeColor="#10b981" showInfo={false} trailColor="rgba(255,255,255,0.1)" />
             </div>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                <Typography.Text>Từ chối</Typography.Text>
-                <Typography.Text strong>{stats.rejected} ({percentRejected.toFixed(1)}%)</Typography.Text>
+                <Typography.Text style={{ color: 'rgba(255,255,255,0.8)' }}>Từ chối</Typography.Text>
+                <Typography.Text strong style={{ color: '#fff' }}>{stats.rejected} ({percentRejected.toFixed(1)}%)</Typography.Text>
               </div>
-              <Progress percent={percentRejected} strokeColor="#ff4d4f" showInfo={false} />
+              <Progress percent={percentRejected} strokeColor="#ef4444" showInfo={false} trailColor="rgba(255,255,255,0.1)" />
             </div>
           </Card>
         </Col>

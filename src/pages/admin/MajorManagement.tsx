@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Card, Table, Input, Select, Row, Col, Typography, Tag, Button, Modal, Form, Space, message, InputNumber, Popconfirm } from "antd";
-import { SearchOutlined, PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import { PageHeader } from "../../components/common/PageHeader";
 import { EmptyState } from "../../components/common/EmptyState";
 import { EntityStatusTag } from "../../components/status/EntityStatusTag";
@@ -273,12 +273,15 @@ export const MajorManagement: React.FC = () => {
       </Card>
 
       <Modal
-        title={editingId ? "Cập nhật ngành học" : "Thêm ngành học"}
+        className="dark-modal"
+        title={<span style={{ color: "#fff" }}>{editingId ? "Cập nhật ngành học" : "Thêm ngành học"}</span>}
         open={isModalVisible}
         onCancel={handleModalCancel}
         footer={null}
         width={800}
         destroyOnClose
+
+        closeIcon={<CloseOutlined style={{ color: "rgba(255,255,255,0.6)" }} />}
       >
         <Form
           form={form}

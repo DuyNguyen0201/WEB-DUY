@@ -150,19 +150,19 @@ export const CandidateDashboard: React.FC = () => {
 
       {/* 1. Premium hero section */}
       <Card 
+        className="premium-card"
         style={{ 
           marginBottom: 24, 
-          background: "linear-gradient(135deg, #f0f5ff 0%, #e6f7ff 100%)",
-          borderRadius: 12,
-          border: "1px solid #d6e4ff"
+          background: "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(0, 240, 255, 0.15) 100%)",
+          border: "1px solid rgba(0, 240, 255, 0.2)",
         }}
       >
         <Row align="middle" justify="space-between">
           <Col xs={24} md={16}>
-            <Title level={3} style={{ marginTop: 0, color: "#003eb3" }}>
+            <Title level={3} style={{ marginTop: 0, color: "#fff", textShadow: "0 2px 10px rgba(0,240,255,0.3)" }}>
               Xin chào, {currentUser?.fullName || "Thí sinh"}!
             </Title>
-            <Paragraph style={{ fontSize: 16, color: "#595959", marginBottom: 24 }}>
+            <Paragraph style={{ fontSize: 16, color: "rgba(255,255,255,0.8)", marginBottom: 24 }}>
               Theo dõi hồ sơ xét tuyển, kết quả và cập nhật thông tin cá nhân một cách dễ dàng.
             </Paragraph>
             <Space size="middle" wrap>
@@ -241,9 +241,9 @@ export const CandidateDashboard: React.FC = () => {
                 <Card 
                   hoverable 
                   onClick={() => navigate("/candidate/apply")}
-                  style={{ textAlign: "center", background: "#fafafa", border: "1px dashed #d9d9d9" }}
+                  style={{ textAlign: "center", background: "rgba(255,255,255,0.05)", border: "1px dashed rgba(255,255,255,0.2)" }}
                 >
-                  <PlusOutlined style={{ fontSize: 32, color: "#1677ff", marginBottom: 12 }} />
+                  <PlusOutlined style={{ fontSize: 32, color: "var(--neon-cyan)", marginBottom: 12 }} />
                   <Title level={5} style={{ margin: "0 0 8px 0" }}>Nộp hồ sơ mới</Title>
                   <Text type="secondary" style={{ fontSize: 12 }}>Đăng ký xét tuyển vào các trường đại học</Text>
                 </Card>
@@ -252,9 +252,9 @@ export const CandidateDashboard: React.FC = () => {
                 <Card 
                   hoverable 
                   onClick={() => navigate("/candidate/applications")}
-                  style={{ textAlign: "center", background: "#fafafa", border: "1px dashed #d9d9d9" }}
+                  style={{ textAlign: "center", background: "rgba(255,255,255,0.05)", border: "1px dashed rgba(255,255,255,0.2)" }}
                 >
-                  <FolderOpenOutlined style={{ fontSize: 32, color: "#52c41a", marginBottom: 12 }} />
+                  <FolderOpenOutlined style={{ fontSize: 32, color: "#10b981", marginBottom: 12 }} />
                   <Title level={5} style={{ margin: "0 0 8px 0" }}>Hồ sơ của tôi</Title>
                   <Text type="secondary" style={{ fontSize: 12 }}>Quản lý và theo dõi trạng thái hồ sơ</Text>
                 </Card>
@@ -263,9 +263,9 @@ export const CandidateDashboard: React.FC = () => {
                 <Card 
                   hoverable 
                   onClick={() => navigate("/candidate/profile")}
-                  style={{ textAlign: "center", background: "#fafafa", border: "1px dashed #d9d9d9" }}
+                  style={{ textAlign: "center", background: "rgba(255,255,255,0.05)", border: "1px dashed rgba(255,255,255,0.2)" }}
                 >
-                  <UserOutlined style={{ fontSize: 32, color: "#722ed1", marginBottom: 12 }} />
+                  <UserOutlined style={{ fontSize: 32, color: "var(--neon-purple)", marginBottom: 12 }} />
                   <Title level={5} style={{ margin: "0 0 8px 0" }}>Thông tin cá nhân</Title>
                   <Text type="secondary" style={{ fontSize: 12 }}>Cập nhật thông tin và điểm số</Text>
                 </Card>
@@ -279,31 +279,31 @@ export const CandidateDashboard: React.FC = () => {
           <Card title={<Title level={5} style={{ margin: 0 }}>Tình trạng hồ sơ</Title>} style={{ borderRadius: 12, height: "100%" }}>
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                <Text>Chờ duyệt</Text>
-                <Text strong>{stats.pending} ({percentPending.toFixed(1)}%)</Text>
+                <Text style={{ color: "rgba(255,255,255,0.8)" }}>Chờ duyệt</Text>
+                <Text strong style={{ color: "#fff" }}>{stats.pending} ({percentPending.toFixed(1)}%)</Text>
               </div>
-              <Progress percent={percentPending} strokeColor="#faad14" showInfo={false} size="small" />
+              <Progress percent={percentPending} strokeColor="#00F0FF" showInfo={false} size="small" trailColor="rgba(255,255,255,0.1)" />
             </div>
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                <Text>Đã duyệt</Text>
-                <Text strong>{stats.approved} ({percentApproved.toFixed(1)}%)</Text>
+                <Text style={{ color: "rgba(255,255,255,0.8)" }}>Đã duyệt</Text>
+                <Text strong style={{ color: "#fff" }}>{stats.approved} ({percentApproved.toFixed(1)}%)</Text>
               </div>
-              <Progress percent={percentApproved} strokeColor="#52c41a" showInfo={false} size="small" />
+              <Progress percent={percentApproved} strokeColor="#10b981" showInfo={false} size="small" trailColor="rgba(255,255,255,0.1)" />
             </div>
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                <Text>Từ chối</Text>
-                <Text strong>{stats.rejected} ({percentRejected.toFixed(1)}%)</Text>
+                <Text style={{ color: "rgba(255,255,255,0.8)" }}>Từ chối</Text>
+                <Text strong style={{ color: "#fff" }}>{stats.rejected} ({percentRejected.toFixed(1)}%)</Text>
               </div>
-              <Progress percent={percentRejected} strokeColor="#ff4d4f" showInfo={false} size="small" />
+              <Progress percent={percentRejected} strokeColor="#ef4444" showInfo={false} size="small" trailColor="rgba(255,255,255,0.1)" />
             </div>
             
             {/* 6. Optional support info block */}
-            <div style={{ marginTop: 24, padding: 12, background: "#e6f4ff", borderRadius: 8, border: "1px solid #91caff" }}>
+            <div style={{ marginTop: 24, padding: 12, background: "rgba(0, 240, 255, 0.1)", borderRadius: 8, border: "1px solid rgba(0, 240, 255, 0.3)" }}>
               <Space align="start">
-                <InfoCircleOutlined style={{ color: "#1677ff", marginTop: 4 }} />
-                <Text style={{ fontSize: 13, color: "#003eb3" }}>
+                <InfoCircleOutlined style={{ color: "var(--neon-cyan)", marginTop: 4 }} />
+                <Text style={{ fontSize: 13, color: "rgba(255,255,255,0.85)" }}>
                   Hãy kiểm tra kỹ thông tin và minh chứng trước khi nộp hồ sơ. Theo dõi trạng thái thường xuyên để không bỏ lỡ cập nhật mới.
                 </Text>
               </Space>

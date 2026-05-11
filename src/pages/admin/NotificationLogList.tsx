@@ -58,7 +58,7 @@ export const NotificationLogList: React.FC = () => {
   const getChannelTag = (channel: string) => {
     switch (channel) {
       case "email": return <Tag color="purple">Email</Tag>;
-      case "in_app": return <Tag color="cyan">Thông báo trong hệ thống</Tag>;
+      case "in_app": return <Tag color="cyan">Hệ thống</Tag>;
       default: return <Tag>{channel}</Tag>;
     }
   };
@@ -105,6 +105,7 @@ export const NotificationLogList: React.FC = () => {
       title: "Kênh",
       dataIndex: "channel",
       key: "channel",
+      width: "12%",
       render: (channel: string) => getChannelTag(channel),
     },
     {
@@ -151,41 +152,42 @@ export const NotificationLogList: React.FC = () => {
 
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
+          <Card bordered={false} style={{ background: "rgba(255,255,255,0.05)" }}>
             <Statistic 
-              title="Tổng thông báo" 
+              title={<span style={{ color: "rgba(255,255,255,0.7)" }}>Tổng thông báo</span>}
               value={totalLogs} 
-              prefix={<BellOutlined />} 
+              prefix={<BellOutlined style={{ color: "#fff" }} />} 
+              valueStyle={{ color: "#fff" }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
+          <Card bordered={false} style={{ background: "rgba(16,185,129,0.05)" }}>
             <Statistic 
-              title="Đã gửi" 
+              title={<span style={{ color: "rgba(255,255,255,0.7)" }}>Đã gửi</span>}
               value={sentLogs} 
-              prefix={<CheckCircleOutlined />} 
-              valueStyle={{ color: '#3f8600' }} 
+              prefix={<CheckCircleOutlined style={{ color: "#10b981" }} />} 
+              valueStyle={{ color: '#10b981' }} 
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
+          <Card bordered={false} style={{ background: "rgba(250,173,20,0.05)" }}>
             <Statistic 
-              title="Chờ gửi" 
+              title={<span style={{ color: "rgba(255,255,255,0.7)" }}>Chờ gửi</span>}
               value={pendingLogs} 
-              prefix={<ClockCircleOutlined />} 
+              prefix={<ClockCircleOutlined style={{ color: "#faad14" }} />} 
               valueStyle={{ color: '#faad14' }} 
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <Card bordered={false}>
+          <Card bordered={false} style={{ background: "rgba(239,68,68,0.05)" }}>
             <Statistic 
-              title="Gửi thất bại" 
+              title={<span style={{ color: "rgba(255,255,255,0.7)" }}>Gửi thất bại</span>}
               value={failedLogs} 
-              prefix={<CloseCircleOutlined />} 
-              valueStyle={{ color: '#cf1322' }} 
+              prefix={<CloseCircleOutlined style={{ color: "#ef4444" }} />} 
+              valueStyle={{ color: '#ef4444' }} 
             />
           </Card>
         </Col>
@@ -256,11 +258,17 @@ export const NotificationLogList: React.FC = () => {
       </Card>
 
       <Drawer
-        title="Chi tiết thông báo"
+        title={<span style={{ color: "#fff" }}>Chi tiết thông báo</span>}
         placement="right"
         width={500}
         onClose={() => setDetailVisible(false)}
         open={detailVisible}
+        styles={{
+          content: { background: "#0f172a" },
+          header: { background: "#0f172a", borderBottom: "1px solid rgba(255,255,255,0.1)" },
+          body: { background: "#0f172a" }
+        }}
+        closeIcon={<CloseCircleOutlined style={{ color: "rgba(255,255,255,0.6)", fontSize: 18 }} />}
       >
         {selectedLog && (
           <Descriptions column={1} bordered size="small">
@@ -286,7 +294,7 @@ export const NotificationLogList: React.FC = () => {
               <Text strong>{selectedLog.subject}</Text>
             </Descriptions.Item>
             <Descriptions.Item label="Nội dung" span={1}>
-              <div style={{ whiteSpace: "pre-wrap", background: "#f5f5f5", padding: "12px", borderRadius: "4px" }}>
+              <div style={{ whiteSpace: "pre-wrap", background: "rgba(255,255,255,0.05)", padding: "12px", borderRadius: "4px" }}>
                 {selectedLog.content}
               </div>
             </Descriptions.Item>

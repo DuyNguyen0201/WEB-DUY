@@ -82,7 +82,8 @@ export const NotificationList: React.FC = () => {
               <List.Item
                 style={{ 
                   cursor: "pointer", 
-                  backgroundColor: item.isRead ? "transparent" : "#f0f5ff",
+                  backgroundColor: item.isRead ? "rgba(255,255,255,0.02)" : "rgba(0, 240, 255, 0.1)",
+                  border: item.isRead ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0, 240, 255, 0.3)",
                   padding: "16px",
                   borderRadius: "8px",
                   marginBottom: "8px",
@@ -113,11 +114,11 @@ export const NotificationList: React.FC = () => {
                         width: 40, 
                         height: 40, 
                         borderRadius: "50%", 
-                        background: item.isRead ? "#f0f0f0" : "#1677ff",
+                        background: item.isRead ? "rgba(255,255,255,0.1)" : "var(--neon-cyan)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: item.isRead ? "#8c8c8c" : "white"
+                        color: item.isRead ? "rgba(255,255,255,0.5)" : "#000"
                       }}>
                         <BellOutlined style={{ fontSize: 18 }} />
                       </div>
@@ -143,11 +144,17 @@ export const NotificationList: React.FC = () => {
       </Card>
 
       <Drawer
-        title="Chi tiết thông báo"
+        title={<span style={{ color: "#fff" }}>Chi tiết thông báo</span>}
         placement="right"
         width={400}
         onClose={() => setDetailVisible(false)}
         open={detailVisible}
+        styles={{
+          content: { background: "#0f172a" },
+          header: { background: "#0f172a", borderBottom: "1px solid rgba(255,255,255,0.1)" },
+          body: { background: "#0f172a" }
+        }}
+        closeIcon={<CloseCircleOutlined style={{ color: "rgba(255,255,255,0.6)", fontSize: 18 }} />}
       >
         {selectedLog && (
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -162,7 +169,8 @@ export const NotificationList: React.FC = () => {
               </Space>
               
               <div style={{ 
-                background: "#f9f9f9", 
+                background: "rgba(255,255,255,0.05)", 
+                border: "1px solid rgba(255,255,255,0.1)",
                 padding: "16px", 
                 borderRadius: "8px", 
                 whiteSpace: "pre-wrap",
@@ -173,7 +181,7 @@ export const NotificationList: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ borderTop: "1px solid #f0f0f0", paddingTop: 16 }}>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
               <Space direction="vertical" size="small">
                 <Text type="secondary">
                   Thời gian: {new Date(selectedLog.createdAt).toLocaleString("vi-VN")}

@@ -423,18 +423,18 @@ export const ApplicationForm: React.FC = () => {
               </Row>
               <Row gutter={16}>
                 <Col xs={24} sm={8}>
-                  <Card size="small" style={{ background: "#fafafa" }}>
-                    <Statistic title="Tổng điểm thi" value={totalScore} precision={2} />
+                  <Card size="small" style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)" }}>
+                    <Statistic title={<span style={{color: "rgba(255,255,255,0.8)"}}>Tổng điểm thi</span>} value={totalScore} precision={2} valueStyle={{ color: "#fff" }} />
                   </Card>
                 </Col>
                 <Col xs={24} sm={8}>
-                  <Card size="small" style={{ background: "#e6f7ff", borderColor: "#91caff" }}>
-                    <Statistic title="Điểm ưu tiên" value={currentPriorityScore} precision={2} />
+                  <Card size="small" style={{ background: "rgba(0,240,255,0.1)", borderColor: "rgba(0,240,255,0.3)" }}>
+                    <Statistic title={<span style={{color: "rgba(255,255,255,0.8)"}}>Điểm ưu tiên</span>} value={currentPriorityScore} precision={2} valueStyle={{ color: "var(--neon-cyan)" }} />
                   </Card>
                 </Col>
                 <Col xs={24} sm={8}>
-                  <Card size="small" style={{ background: "#f6ffed", borderColor: "#b7eb8f" }}>
-                    <Statistic title="Tổng điểm xét tuyển" value={finalAdmissionScore} precision={2} valueStyle={{ color: "#52c41a", fontWeight: "bold" }} />
+                  <Card size="small" style={{ background: "rgba(16,185,129,0.1)", borderColor: "rgba(16,185,129,0.3)" }}>
+                    <Statistic title={<span style={{color: "rgba(255,255,255,0.8)"}}>Tổng điểm xét tuyển</span>} value={finalAdmissionScore} precision={2} valueStyle={{ color: "#10b981", fontWeight: "bold", textShadow: "0 0 10px rgba(16,185,129,0.3)" }} />
                   </Card>
                 </Col>
               </Row>

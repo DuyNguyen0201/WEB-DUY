@@ -71,7 +71,7 @@ export const Results: React.FC = () => {
             {approvedApps.map(app => (
               <Col xs={24} md={12} key={app.id}>
                 <Card 
-                  style={{ borderColor: "#b7eb8f", background: "#f6ffed" }}
+                  style={{ borderColor: "rgba(16, 185, 129, 0.3)", background: "rgba(16, 185, 129, 0.1)" }}
                   actions={[
                     <Button type="link" onClick={() => navigate(`/candidate/applications/${app.id}`)}>Xem chi tiết hồ sơ</Button>
                   ]}
@@ -105,6 +105,7 @@ export const Results: React.FC = () => {
             {pendingApps.map(app => (
               <Col xs={24} md={12} key={app.id}>
                 <Card
+                  style={{ borderColor: "rgba(0, 240, 255, 0.2)", background: "rgba(0, 240, 255, 0.05)" }}
                   actions={[
                     <Button type="link" onClick={() => navigate(`/candidate/applications/${app.id}`)}>Xem chi tiết hồ sơ</Button>
                   ]}
@@ -132,7 +133,7 @@ export const Results: React.FC = () => {
             {rejectedApps.map(app => (
               <Col xs={24} md={12} key={app.id}>
                 <Card
-                  style={{ borderColor: "#ffa39e", background: "#fff2f0" }}
+                  style={{ borderColor: "rgba(239, 68, 68, 0.3)", background: "rgba(239, 68, 68, 0.1)" }}
                   actions={[
                     <Button type="link" onClick={() => navigate(`/candidate/applications/${app.id}`)}>Xem chi tiết hồ sơ</Button>
                   ]}

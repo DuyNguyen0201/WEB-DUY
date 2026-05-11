@@ -65,7 +65,15 @@ export const CandidateLayout: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", background: "transparent" }}>
+    <>
+      {/* Ambient Background Orbs */}
+      <div className="ambient-background">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="orb orb-3"></div>
+      </div>
+
+      <Layout style={{ minHeight: "100vh", background: "transparent", position: "relative", zIndex: 1 }}>
       <Sider 
         collapsible 
         collapsed={collapsed} 
@@ -87,7 +95,7 @@ export const CandidateLayout: React.FC = () => {
             }}>
               <BankOutlined style={{ fontSize: 24, color: "white" }} />
             </div>
-            {!collapsed && <span style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.5px" }}>UniAdmission</span>}
+            {!collapsed && <span className="glowing-text" style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.5px" }}>UniAdmission</span>}
           </div>
         </div>
         <Menu 
@@ -113,21 +121,22 @@ export const CandidateLayout: React.FC = () => {
         <Content style={{ margin: "24px 16px", display: "flex", flexDirection: "column" }}>
           {/* Welcome Banner */}
           <div style={{ 
-            background: "linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)", 
+            background: "linear-gradient(120deg, rgba(16, 185, 129, 0.15) 0%, rgba(0, 240, 255, 0.15) 100%)", 
+            border: "1px solid rgba(0, 240, 255, 0.2)",
             borderRadius: "20px", 
             padding: "32px 40px",
             marginBottom: "24px",
-            boxShadow: "var(--soft-shadow)",
+            boxShadow: "0 0 20px rgba(0, 240, 255, 0.1)",
             position: "relative",
             overflow: "hidden"
           }}>
             <div style={{ position: "relative", zIndex: 1 }}>
-              <Title level={3} style={{ color: "#1f2937", margin: 0 }}>Xin chào, {currentUser?.fullName}! 🎓</Title>
-              <Text style={{ color: "#4b5563", fontSize: "16px" }}>Cánh cửa đại học mơ ước đang rộng mở. Hãy theo dõi tiến trình hồ sơ của bạn tại đây.</Text>
+              <Title level={3} style={{ color: "#fff", margin: 0, textShadow: "0 2px 10px rgba(0,240,255,0.3)" }}>Xin chào, {currentUser?.fullName}! 🎓</Title>
+              <Text style={{ color: "rgba(255,255,255,0.8)", fontSize: "16px" }}>Cánh cửa đại học mơ ước đang rộng mở. Hãy theo dõi tiến trình hồ sơ của bạn tại đây.</Text>
             </div>
             {/* Abstract background shapes for banner */}
-            <div style={{ position: "absolute", top: "-50px", right: "-50px", width: "200px", height: "200px", background: "rgba(255,255,255,0.3)", borderRadius: "50%", filter: "blur(20px)" }}></div>
-            <div style={{ position: "absolute", bottom: "-50px", right: "100px", width: "150px", height: "150px", background: "rgba(255,255,255,0.3)", borderRadius: "50%", filter: "blur(20px)" }}></div>
+            <div style={{ position: "absolute", top: "-50px", right: "-50px", width: "200px", height: "200px", background: "rgba(0, 240, 255, 0.2)", borderRadius: "50%", filter: "blur(40px)" }}></div>
+            <div style={{ position: "absolute", bottom: "-50px", right: "100px", width: "150px", height: "150px", background: "rgba(16, 185, 129, 0.2)", borderRadius: "50%", filter: "blur(40px)" }}></div>
           </div>
 
           <div style={{ flex: 1 }}>
@@ -136,5 +145,6 @@ export const CandidateLayout: React.FC = () => {
         </Content>
       </Layout>
     </Layout>
+    </>
   );
 };
